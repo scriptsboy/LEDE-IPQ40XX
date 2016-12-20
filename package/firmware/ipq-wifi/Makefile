@@ -13,7 +13,6 @@ endef
 define Build/Compile
 endef
 
-#ALLWIFIBOARDS:=<devicename>
 ALLWIFIBOARDS:=zyxel_nbg6617 zyxel_wre6606
 ALLWIFIPACKAGES:=$(foreach BOARD,$(ALLWIFIBOARDS),ipq-wifi-$(BOARD))
 

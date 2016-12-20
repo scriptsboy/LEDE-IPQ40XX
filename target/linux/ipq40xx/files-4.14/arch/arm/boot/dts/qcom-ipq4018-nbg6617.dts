@@ -23,11 +23,12 @@
 
 / {
 	model = "ZyXEL NBG6617";
-	compatible = "zyxel,nbg6617", "qcom,ipq4019";
+
+	compatible = "zyxel,nbg6617", "qcom,ipq4018", "qcom,ipq4019";
 
 	chosen {
 		/*
-		 * the vendor u-boot adds root and mtdparts cmdline parameters
+		 * the vendor u-boot adds root= and mtdparts cmdline parameters
 		 * which we don't want... but we have to overwrite them or else
 		 * the kernel will take them at face value.
 		 */
@@ -39,6 +40,11 @@
 		led-failsafe = &power;
 		led-running = &power;
 		led-upgrade = &power;
+	};
+
+	memory {
+		device_type = "memory";
+		reg = <0x80000000 0x10000000>;
 	};
 
 	soc {
@@ -85,10 +91,6 @@
 		};
 
 		usb3@8af8800 {
-			status = "okay";
-		};
-
-		crypto@8e3a000 {
 			status = "okay";
 		};
 
@@ -160,6 +162,14 @@
 	};
 };
 
+&cryptobam {
+	status = "okay";
+};
+
+&blsp_dma {
+	status = "okay";
+};
+
 &tlmm {
 	serial_pins: serial_pinmux {
 		mux {
@@ -187,14 +197,15 @@
 	led_pins: led_pinmux  {
 		mux {
 			pins = "gpio0", "gpio1", "gpio3", "gpio5", "gpio58";
-			drive-strength = <0x8>;
+			function = "gpio";
+			drive-strength = <8>;
 			bias-disable;
 			output-low;
 		};
 	};
 };
 
-&spi_0 { /* BLSP1 QUP1 */
+&spi_0 {
 	pinctrl-0 = <&spi_0_pins>;
 	pinctrl-names = "default";
 	status = "okay";
@@ -292,22 +303,6 @@
 	};
 };
 
-&cryptobam {
-	status = "okay";
-};
-
-&blsp_dma {
-	status = "okay";
-};
-
-&wifi0 {
-	status = "okay";
-};
-
-&wifi1 {
-	status = "okay";
-};
-
 &usb3_ss_phy {
 	status = "okay";
 };
@@ -317,5 +312,13 @@
 };
 
 &usb2_hs_phy {
+	status = "okay";
+};
+
+&wifi0 {
+	status = "okay";
+};
+
+&wifi1 {
 	status = "okay";
 };
